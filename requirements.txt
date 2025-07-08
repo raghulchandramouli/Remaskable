@@ -1,0 +1,8 @@
+torch
+transformers
+diffusers
+opencv-python
+matplotlib
+tqdm
+pyyaml
+pycocotools

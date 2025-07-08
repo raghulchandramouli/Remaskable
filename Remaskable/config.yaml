@@ -1,0 +1,17 @@
+data:
+  image_dir : "/mnt/g/Authenta/data/authenta-remaskable-inpainting-detection/images"
+  annotation_file : "/mnt/g/Authenta/data/authenta-remaskable-inpainting-detection/annotations/instances_val2017.json"
+  mask_dir : "/mnt/g/Authenta/data/authenta-remaskable-inpainting-detection/masks"
+  inpainted_dir : "/mnt/g/Authenta/data/authenta-remaskable-inpainting-detection/Inpainted"
+
+mask_generation:
+  min_mask_area : 1000
+  max_images : 500
+  seed : 42
+
+inpainting:
+  model_id : "stabilityai/stable-diffusion-2-inpainting"
+  prompt : "Fill the masks with realistic content without altering the original image and ensuring no halluciantions."
+  guidance_scale : 7.5
+  strength : 0.75
+  num_inference_steps : 50

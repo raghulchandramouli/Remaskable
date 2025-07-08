@@ -1,4 +1,4 @@
-transformer>=4.38# Remaskable
+# Remaskable
 
 Remaskable is a data generation and segmentation pipeline that leverages state-of-the-art vision transformer models for object detection, segmentation, and inpainting. It is designed for research and practical applications in computer vision, enabling users to detect, segment, inpaint, and visualize objects in images with ease.
 

@@ -63,6 +63,7 @@ def run_inpainting(
         try:
             result = pipeline(
                 prompt=prompt,
+                negative_prompt="distortion, blurry, low quality",
                 image=image,
                 mask_image=mask,
                 guidance_scale=guidance_scale,
@@ -70,6 +71,12 @@ def run_inpainting(
                 num_inference_steps=num_inference_steps,
                 **kwargs
             )
-            result.images[0].save(os.path.join(output_dir, f"inpainted_{img_id}.png"))
+            
+            if result is not None and result.images:
+                result.images[0].save(os.path.join(output_dir, f"Inpainted_{img_id}.png"))
+            else:
+                print(f" SDXL pipeline returned None for {img_id}. Skipping.")
+            
         except Exception as e:
             print(f"Error processing {img_id}: {e}")
+             

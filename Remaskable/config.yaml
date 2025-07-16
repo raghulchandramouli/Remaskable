@@ -6,7 +6,7 @@ data:
 
 mask_generation:
   min_mask_area : 1000
-  max_images : 500
+  max_images : 10
   seed : 42
 
 inpainting_models:
@@ -20,7 +20,7 @@ inpainting_models:
     pipeline_class: "StableDiffusionInpaintPipeline"
     output_dir: "assets/inpainted/sd2"
 
-  - name: repaint
-    model_id: "CompVis/repaint"
-    pipeline_class: "RePaintPipeline"
-    output_dir: "assets/inpainted/repaint"
+  - name: sdxl
+    model_id: "diffusers/stable-diffusion-xl-1.0-inpainting-0.1"
+    pipeline_class: "StableDiffusionXLInpaintPipeline"
+    output_dir: "assets/inpainted/sdxl"

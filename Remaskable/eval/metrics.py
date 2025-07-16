@@ -77,43 +77,58 @@ def compute_lpips_ssim(
             "lpips_mean": np.mean(lpips_scores) if lpips_scores else None,
             "ssim_mean": np.mean(ssim_scores) if ssim_scores else None,
         }
-        print(f"[{model_name}] LPIPS mean: {results[model_name]['lpips_mean']:.4f}, SSIM mean: {results[model_name]['ssim_mean']:.4f}")
+        lpips_mean = results[model_name]['lpips_mean']
+        ssim_mean = results[model_name]['ssim_mean']
+        lpips_str = f"{lpips_mean:.4f}" if lpips_mean is not None else "N/A"
+        ssim_str = f"{ssim_mean:.4f}" if ssim_mean is not None else "N/A"
+        print(f"[{model_name}] LPIPS mean: {lpips_str}, SSIM mean: {ssim_str}")
 
-    # Plotting
+    # Add this line to define model_names
     model_names = list(results.keys())
-    lpips_means = [results[m]["lpips_mean"] for m in model_names]
-    ssim_means = [results[m]["ssim_mean"] for m in model_names]
 
-    fig, ax1 = plt.subplots(figsize=(8, 5))
-    color1 = 'tab:blue'
-    color2 = 'tab:orange'
+    # Filter out models with None means for plotting
+    model_names_plot = []
+    lpips_means_plot = []
+    ssim_means_plot = []
+    for m in model_names:
+        if results[m]["lpips_mean"] is not None and results[m]["ssim_mean"] is not None:
+            model_names_plot.append(m)
+            lpips_means_plot.append(results[m]["lpips_mean"])
+            ssim_means_plot.append(results[m]["ssim_mean"])
 
-    ax1.set_xlabel('Model')
-    ax1.set_ylabel('LPIPS (lower is better)', color=color1)
-    ax1.bar(model_names, lpips_means, color=color1, alpha=0.6, label='LPIPS')
-    ax1.tick_params(axis='y', labelcolor=color1)
-    ax1.set_ylim([0, max(lpips_means)*1.2])
+    if model_names_plot:
+        fig, ax1 = plt.subplots(figsize=(8, 5))
+        color1 = 'tab:blue'
+        color2 = 'tab:orange'
 
-    ax2 = ax1.twinx()
-    ax2.set_ylabel('SSIM (higher is better)', color=color2)
-    ax2.plot(model_names, ssim_means, color=color2, marker='o', label='SSIM')
-    ax2.tick_params(axis='y', labelcolor=color2)
-    ax2.set_ylim([0, 1])
+        ax1.set_xlabel('Model')
+        ax1.set_ylabel('LPIPS (lower is better)', color=color1)
+        ax1.bar(model_names_plot, lpips_means_plot, color=color1, alpha=0.6, label='LPIPS')
+        ax1.tick_params(axis='y', labelcolor=color1)
+        ax1.set_ylim([0, max(lpips_means_plot)*1.2])
 
-    plt.title('LPIPS and SSIM Comparison Across Models')
-    fig.tight_layout()
-    plt.savefig("lpips_ssim_comparison.png")
-    plt.close()
-    print("Saved comparison plot as lpips_ssim_comparison.png")
+        ax2 = ax1.twinx()
+        ax2.set_ylabel('SSIM (higher is better)', color=color2)
+        ax2.plot(model_names_plot, ssim_means_plot, color=color2, marker='o', label='SSIM')
+        ax2.tick_params(axis='y', labelcolor=color2)
+        ax2.set_ylim([0, 1])
+
+        plt.title('LPIPS and SSIM Comparison Across Models')
+        fig.tight_layout()
+        plt.savefig("lpips_ssim_comparison.png")
+        plt.close()
+        print("Saved comparison plot as lpips_ssim_comparison.png")
+    else:
+        print("No valid models to plot.")
 
     return results
 
-# Example usage:
-# results = compute_lpips_ssim(
-#     original_dir="/path/to/originals",
-#     inpainted_dir={
-#         "SDXL": "/path/to/SDXL",
-#         "Model2": "/path/to/Model2",
-#         "Model3": "/path/to/Model3"
-#     }
-# )
+
+results = compute_lpips_ssim(
+    original_dir="/mnt/g/Authenta/data/authenta-remaskable-inpainting-detection/eval",
+    inpainted_dir={
+        "SDXL": "/mnt/g/Authenta/data-generations/Remaskable/Remaskable/assets/inpainted/sdxl",
+        "SD2": "/mnt/g/Authenta/data-generations/Remaskable/Remaskable/assets/inpainted/sd2",
+        "SD15": "/mnt/g/Authenta/data-generations/Remaskable/Remaskable/assets/inpainted/sd15"
+    }
+)

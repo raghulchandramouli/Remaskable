@@ -3,10 +3,20 @@ from src.dataset_loader import load_coco_dataset
 from src.mask_generator import generate_random_masks
 from src.inpainting_engines import load_pipeline, run_inpainting
 from src.utils import ensure_dirs
-
+import argparse
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num_images", type=int, default=None, help="Number of images/masks to generate")
+    args = parser.parse_args()
+
     config = load_config()
+
+    # Allow override of max_images from command line
+    if args.num_images is not None:
+        config["mask_generation"]["max_images"] = args.num_images
+    elif "max_images" not in config["mask_generation"] or config["mask_generation"]["max_images"] is None:
+        config["mask_generation"]["max_images"] = 5000  # Default to 5K if not set
 
     # Ensure mask and all inpainted output dirs exist
     all_dirs = [config["data"]["mask_dir"]]

@@ -1,7 +1,7 @@
 from src.config import load_config
 from src.dataset_loader import load_coco_dataset
 from src.mask_generator import generate_random_masks
-from src.inpainting_sd2 import load_pipeline, run_inpainting
+from Remaskable.src.inpainting_engines import load_pipeline, run_inpainting
 from src.utils import ensure_dirs
 
 def main():

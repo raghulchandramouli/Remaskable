@@ -9,9 +9,18 @@ mask_generation:
   max_images : 500
   seed : 42
 
-inpainting:
-  model_id : "stabilityai/stable-diffusion-2-inpainting"
-  prompt : "Fill the masks with realistic content without altering the original image and ensuring no halluciantions."
-  guidance_scale : 7.5
-  strength : 0.75
-  num_inference_steps : 50
+inpainting_models:
+  - name: sd15
+    model_id: "runwayml/stable-diffusion-inpainting"
+    pipeline_class: "StableDiffusionInpaintPipeline"
+    output_dir: "assets/inpainted/sd15"
+
+  - name: sd2
+    model_id: "stabilityai/stable-diffusion-2-inpainting"
+    pipeline_class: "StableDiffusionInpaintPipeline"
+    output_dir: "assets/inpainted/sd2"
+
+  - name: repaint
+    model_id: "CompVis/repaint"
+    pipeline_class: "RePaintPipeline"
+    output_dir: "assets/inpainted/repaint"
